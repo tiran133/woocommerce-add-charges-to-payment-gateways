@@ -35,8 +35,8 @@ msgstr "Feste Gebühr hinzufügen"
 
 #: woocommerce-add-extra-charges-option-to-payment-gateways.php:85
 #, php-format
-msgid "Add %% to total amount"
-msgstr "%% hinzufügen"
+msgid "Add % to total amount"
+msgstr "% hinzufügen"
 
 #: woocommerce-add-extra-charges-option-to-payment-gateways.php:125
 #, php-format

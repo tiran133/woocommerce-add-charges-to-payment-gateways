@@ -82,7 +82,7 @@ class WC_PaymentGateway_Add_Charges{
                 $data += '<td class="forminp">';
                 $data += '<fieldset>';
                 $data += '<select name="<?php echo $extra_charges_type?>"><option <?php if($extra_charges_type_value=="add") echo "selected=selected"?> value="add"><?php _e('Add fixed amount to total','woocommerce-add-charges-to-payment-gateways'); ?></option>';
-                $data += '<option <?php if($extra_charges_type_value=="percentage") echo "selected=selected"?> value="percentage"><?php _e('Add %% to total amount','woocommerce-add-charges-to-payment-gateways'); ?></option>';
+                $data += '<option <?php if($extra_charges_type_value=="percentage") echo "selected=selected"?> value="percentage"><?php _e('Add % to total amount','woocommerce-add-charges-to-payment-gateways'); ?></option>';
                 $data += '<br /></fieldset></td></tr></table>';
                 $('.form-table:last').after($data);
 
