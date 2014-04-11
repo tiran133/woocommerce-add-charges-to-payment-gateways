@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2014-04-09 19:07+0100\n"
-"PO-Revision-Date: 2014-04-11 18:04+0100\n"
+"POT-Creation-Date: 2014-04-11 20:08+0100\n"
+"PO-Revision-Date: 2014-04-11 20:08+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -17,28 +17,29 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: woocommerce-add-extra-charges-option-to-payment-gateways.php:73
+#: woocommerce-add-extra-charges-option-to-payment-gateways.php:102
 msgid "Add extra charges"
 msgstr "Gebühr hinzufügen"
 
-#: woocommerce-add-extra-charges-option-to-payment-gateways.php:75
+#: woocommerce-add-extra-charges-option-to-payment-gateways.php:104
 msgid "Extra charges"
 msgstr "Zusätzliche Gebühr"
 
-#: woocommerce-add-extra-charges-option-to-payment-gateways.php:81
+#: woocommerce-add-extra-charges-option-to-payment-gateways.php:110
 msgid "Extra charges Type"
 msgstr "Art der Gebühr"
 
-#: woocommerce-add-extra-charges-option-to-payment-gateways.php:84
+#: woocommerce-add-extra-charges-option-to-payment-gateways.php:113
 msgid "Add fixed amount to total"
 msgstr "Feste Gebühr hinzufügen"
 
-#: woocommerce-add-extra-charges-option-to-payment-gateways.php:85
-#, php-format
+#: woocommerce-add-extra-charges-option-to-payment-gateways.php:114
 msgid "Add % to total amount"
 msgstr "% hinzufügen"
 
-#: woocommerce-add-extra-charges-option-to-payment-gateways.php:125
-#, php-format
-msgid "Extra fee for %s payment gateway"
-msgstr "Zusätzliche Gebühr für %s"
+#: woocommerce-add-extra-charges-option-to-payment-gateways.php:154
+msgid "Extra fee"
+msgstr "Zusätzliche Gebühr"
+
+#~ msgid "Extra fee for %s payment gateway"
+#~ msgstr " Zusätzliche Gebühr %s"

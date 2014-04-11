@@ -40,7 +40,36 @@ class WC_PaymentGateway_Add_Charges{
         add_action( 'admin_head', array($this, 'add_form_fields'));
         add_action( 'woocommerce_calculate_totals', array( $this, 'calculate_totals' ), 10, 1 );
         wp_enqueue_script( 'wc-add-extra-charges', $this->plugin_url() . '/assets/app.js', array('wc-checkout'), false, true );
+        add_filter( 'woocommerce_paypal_args', array(&$this,'woocommerce_paypal_args'),10, 1 );
     }
+
+    function woocommerce_paypal_args( $paypal_args ) {
+        global $woocommerce;
+
+        $item_loop = 0;
+        foreach ( $paypal_args as $key => $val ) {
+            if ( preg_match('/^item_name.*/',$key) ) $item_loop++;
+        }
+
+        $order = $woocommerce->cart;
+        // Fees
+        if ( sizeof( $order->get_fees() ) > 0 ) {
+            foreach ( $order->get_fees() as $item ) {
+                $item = (array) $item;
+                $item_loop++;
+
+                $paypal_args[ 'item_name_' . $item_loop ]   = $item['name'];
+                $paypal_args[ 'quantity_' . $item_loop ]    = 1;
+                $paypal_args[ 'amount_' . $item_loop ]      = $item['amount'];
+            }
+        }
+        // echo '<pre>';
+        // var_dump( $paypal_args );
+        // echo '</pre>';
+        // die();
+        return $paypal_args;
+    }
+ 
 
     function load_textdomain() {
         load_plugin_textdomain( 'woocommerce-add-charges-to-payment-gateways', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' ); 
@@ -122,7 +151,7 @@ public function calculate_totals( $totals ) {
                 $amount_extra = $extra_charges;
             }
 
-            $woocommerce->cart->add_fee( sprintf(__('Extra fee for %s payment gateway','woocommerce-add-charges-to-payment-gateways'), $current_gateway->title), $amount_extra, true, 'standard' );
+            $woocommerce->cart->add_fee( __('Extra fee','woocommerce-add-charges-to-payment-gateways'), $amount_extra, true, 'standard' );
             
             $totals->cart_contents_total = $totals->cart_contents_total + $amount_extra;
             // $this -> current_gateway_title = $current_gateway -> title;
