@@ -124,7 +124,7 @@ public function calculate_totals( $totals ) {
 
             $woocommerce->cart->add_fee( sprintf(__('Extra fee for %s payment gateway','woocommerce-add-charges-to-payment-gateways'), $current_gateway->title), $amount_extra, true, 'standard' );
             
-            // $totals -> cart_contents_total = $totals -> cart_contents_total + $amount_extra;
+            $totals->cart_contents_total = $totals->cart_contents_total + $amount_extra;
             // $this -> current_gateway_title = $current_gateway -> title;
             // $this -> current_gateway_extra_charges = $extra_charges;
             // $this -> current_gateway_extra_charges_type_value = $extra_charges_type_value;
