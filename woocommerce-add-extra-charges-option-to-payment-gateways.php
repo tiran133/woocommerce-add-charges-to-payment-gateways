@@ -46,23 +46,23 @@ class WC_PaymentGateway_Add_Charges{
     function woocommerce_paypal_args( $paypal_args ) {
         global $woocommerce;
 
-        $item_loop = 0;
-        foreach ( $paypal_args as $key => $val ) {
-            if ( preg_match('/^item_name.*/',$key) ) $item_loop++;
-        }
+        // $item_loop = 0;
+        // foreach ( $paypal_args as $key => $val ) {
+        //     if ( preg_match('/^item_name.*/',$key) ) $item_loop++;
+        // }
 
-        $order = $woocommerce->cart;
-        // Fees
-        if ( sizeof( $order->get_fees() ) > 0 ) {
-            foreach ( $order->get_fees() as $item ) {
-                $item = (array) $item;
-                $item_loop++;
+        // $order = $woocommerce->cart;
+        // // Fees
+        // if ( sizeof( $order->get_fees() ) > 0 ) {
+        //     foreach ( $order->get_fees() as $item ) {
+        //         $item = (array) $item;
+        //         $item_loop++;
 
-                $paypal_args[ 'item_name_' . $item_loop ]   = $item['name'];
-                $paypal_args[ 'quantity_' . $item_loop ]    = 1;
-                $paypal_args[ 'amount_' . $item_loop ]      = $item['amount'];
-            }
-        }
+        //         $paypal_args[ 'item_name_' . $item_loop ]   = $item['name'];
+        //         $paypal_args[ 'quantity_' . $item_loop ]    = 1;
+        //         $paypal_args[ 'amount_' . $item_loop ]      = $item['amount'];
+        //     }
+        // }
         // echo '<pre>';
         // var_dump( $paypal_args );
         // echo '</pre>';
