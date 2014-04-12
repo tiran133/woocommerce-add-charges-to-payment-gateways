@@ -36,9 +36,43 @@ class WC_PaymentGateway_Add_Charges{
     public function __construct(){
         $this -> current_gateway_title = '';
         $this -> current_gateway_extra_charges = '';
-        add_action('admin_head', array($this, 'add_form_fields'));
+        add_action( 'plugins_loaded', array( &$this, 'load_textdomain') );
+        add_action( 'admin_head', array($this, 'add_form_fields'));
         add_action( 'woocommerce_calculate_totals', array( $this, 'calculate_totals' ), 10, 1 );
         wp_enqueue_script( 'wc-add-extra-charges', $this->plugin_url() . '/assets/app.js', array('wc-checkout'), false, true );
+        add_filter( 'woocommerce_paypal_args', array(&$this,'woocommerce_paypal_args'),10, 1 );
+    }
+
+    function woocommerce_paypal_args( $paypal_args ) {
+        global $woocommerce;
+
+        // $item_loop = 0;
+        // foreach ( $paypal_args as $key => $val ) {
+        //     if ( preg_match('/^item_name.*/',$key) ) $item_loop++;
+        // }
+
+        // $order = $woocommerce->cart;
+        // // Fees
+        // if ( sizeof( $order->get_fees() ) > 0 ) {
+        //     foreach ( $order->get_fees() as $item ) {
+        //         $item = (array) $item;
+        //         $item_loop++;
+
+        //         $paypal_args[ 'item_name_' . $item_loop ]   = $item['name'];
+        //         $paypal_args[ 'quantity_' . $item_loop ]    = 1;
+        //         $paypal_args[ 'amount_' . $item_loop ]      = $item['amount'];
+        //     }
+        // }
+        // echo '<pre>';
+        // var_dump( $paypal_args );
+        // echo '</pre>';
+        // die();
+        return $paypal_args;
+    }
+ 
+
+    function load_textdomain() {
+        load_plugin_textdomain( 'woocommerce-add-charges-to-payment-gateways', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' ); 
     }
 
     function add_form_fields(){
@@ -65,19 +99,19 @@ class WC_PaymentGateway_Add_Charges{
             ?>
             <script>
             jQuery(document).ready(function($){
-                $data = '<h4>Add Extra Charges</h4><table class="form-table">';
+                $data = '<h4><?php _e('Add extra charges','woocommerce-add-charges-to-payment-gateways'); ?></h4><table class="form-table">';
                 $data += '<tr valign="top">';
-                $data += '<th scope="row" class="titledesc">Extra Charges</th>';
+                $data += '<th scope="row" class="titledesc"><?php _e('Extra charges','woocommerce-add-charges-to-payment-gateways'); ?></th>';
                 $data += '<td class="forminp">';
                 $data += '<fieldset>';
                 $data += '<input style="" name="<?php echo $extra_charges_id?>" id="<?php echo $extra_charges_id?>" type="text" value="<?php echo $extra_charges?>"/>';
                 $data += '<br /></fieldset></td></tr>';
                 $data += '<tr valign="top">';
-                $data += '<th scope="row" class="titledesc">Extra Charges Type</th>';
+                $data += '<th scope="row" class="titledesc"><?php _e('Extra charges Type','woocommerce-add-charges-to-payment-gateways'); ?></th>';
                 $data += '<td class="forminp">';
                 $data += '<fieldset>';
-                $data += '<select name="<?php echo $extra_charges_type?>"><option <?php if($extra_charges_type_value=="add") echo "selected=selected"?> value="add">Total Add</option>';
-                $data += '<option <?php if($extra_charges_type_value=="percentage") echo "selected=selected"?> value="percentage">Total % Add</option>';
+                $data += '<select name="<?php echo $extra_charges_type?>"><option <?php if($extra_charges_type_value=="add") echo "selected=selected"?> value="add"><?php _e('Add fixed amount to total','woocommerce-add-charges-to-payment-gateways'); ?></option>';
+                $data += '<option <?php if($extra_charges_type_value=="percentage") echo "selected=selected"?> value="percentage"><?php _e('Add % to total amount','woocommerce-add-charges-to-payment-gateways'); ?></option>';
                 $data += '<br /></fieldset></td></tr></table>';
                 $('.form-table:last').after($data);
 
@@ -109,15 +143,21 @@ public function calculate_totals( $totals ) {
         $extra_charges = (float)get_option( $extra_charges_id);
         $extra_charges_type_value = get_option( $extra_charges_type); 
         if($extra_charges){
+
             if($extra_charges_type_value=="percentage"){
-                $totals -> cart_contents_total = $totals -> cart_contents_total + ($totals -> cart_contents_total*$extra_charges)/100;
-            }else{
-                $totals -> cart_contents_total = $totals -> cart_contents_total + $extra_charges;
+                $amount_extra = ($totals -> cart_contents_total*$extra_charges)/100;
             }
-            $this -> current_gateway_title = $current_gateway -> title;
-            $this -> current_gateway_extra_charges = $extra_charges;
-            $this -> current_gateway_extra_charges_type_value = $extra_charges_type_value;
-            add_action( 'woocommerce_review_order_before_order_total',  array( $this, 'add_payment_gateway_extra_charges_row'));
+            else {
+                $amount_extra = $extra_charges;
+            }
+
+            $woocommerce->cart->add_fee( __('Extra fee','woocommerce-add-charges-to-payment-gateways'), $amount_extra, true, 'standard' );
+            
+            $totals->cart_contents_total = $totals->cart_contents_total + $amount_extra;
+            // $this -> current_gateway_title = $current_gateway -> title;
+            // $this -> current_gateway_extra_charges = $extra_charges;
+            // $this -> current_gateway_extra_charges_type_value = $extra_charges_type_value;
+            // add_action( 'woocommerce_review_order_before_order_total',  array( $this, 'add_payment_gateway_extra_charges_row'));
 
         }
 

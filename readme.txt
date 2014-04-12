@@ -19,6 +19,8 @@ If you'd like to contribute to the plugin you can find it on GitHub: [https://gi
 For Support Please Visit
 [http://www.mrova.com/?p=1252](http://www.mrova.com/?p=1252)
 
+UPDATE: Work on woocommerce 2.1.6 and WordPress 2.8.1
+
 == Installation ==
 
 1. Unzip into your /wp-content/plugins/ directory.
